@@ -1,3 +1,10 @@
+#####
+# Author: brvn0 <me@brvn0.de>
+# Date: 2022-10-24
+# Version: 1.0
+#####
+
+
 import os
 import time
 import shutil
@@ -13,7 +20,7 @@ def ignorePath(path):
 def backup(INPUT_DIR, OUTPUT_DIR, TMP, PGP_PATH=None, ALGORITHM="lz4"):
     # TODO implement pgp encrypting
     OUTPUT_FILE = OUTPUT_DIR + \
-        time.strftime("%Y%m%d-%H") + \
+        time.strftime("%Y%m%d") + \
         ".tar.{ALGORITHM}".format(ALGORITHM=ALGORITHM)
     # Create a backup of INPUT directory
     if os.path.exists(TMP):
@@ -57,7 +64,7 @@ def main():
 
 def getArgs(performChecks=False):
     parser = argparse.ArgumentParser(
-        description='Create a backup of the user\'s data.', epilog='Author: brvn0 (me@brvn0.de)\nVersion: 1.0\nDate: 2022-10-23\nForgive me for the poor style of coding here but this isn\'t meant to be used by anyone who is\'nt myself because it\'s made for a very special use case.', formatter_class=argparse.RawTextHelpFormatter)
+        description='Create a backup of the user\'s data.', epilog='Forgive me for the poor style of coding here but this isn\'t meant to be used by anyone who is\'nt myself because it\'s made for a very special use case.', formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('user', metavar='USER', type=str, action='store',
                         nargs=1, help='The user to backup')
     # add an argument to specify the compression algorithm
