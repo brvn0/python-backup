@@ -11,7 +11,7 @@ import re
 import os
 import time
 
-BASEDIR = "/data/smb/{user}"
+BASEDIR = "/backups/{user}"
 
 
 def daterange(start_date, end_date):
@@ -44,7 +44,11 @@ def sortOut(fileNames):
         name = re.split('([0-9]{8})', file)
         if args.verbose:
             print("name: " + name[1])
-        name = name[1]
+        try:
+            name = name[1]
+        except IndexError:
+            print("Skipping file -> IndexError (date not found in name): " + file)
+            continue
         # date object from string
         date = datetime.strptime(name, "%Y%m%d")
 
@@ -101,16 +105,7 @@ if args.test:
     fileNames = generateDemoFiles()
     print("Test/Demo mode")
 else:
-    if args.user == 'thomas' or args.user == 'andi':
-        BASEDIR = BASEDIR.format(user=args.user) + '-priv/backups'
-    elif args.user == 'public':
-        BASEDIR = BASEDIR.format(user=args.user) + '/backups'
-    elif args.path != None:
-        BASEDIR = args.path[0]
-    else:
-        print("User not found and no path given")
-        exit(1)
-
+    BASEDIR = BASEDIR.format(user=args.user)
     if args.verbose:
         print("BASEDIR: {BASEDIR}".format(BASEDIR=BASEDIR))
 
