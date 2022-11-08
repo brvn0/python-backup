@@ -3,7 +3,7 @@ MOUNTPOINT='/backups'
 KEYFILE='/raid-crypt.key'
 ALIAS='backups'
 
-shred -z -n 1 $DRIVE
+shred -v -n 1 $DRIVE
 
 # Create a luks partition on the drive
 cryptsetup -c aes-cbc-essiv:sha256 -y -s 256 luksFormat $DRIVE --key-file $KEYFILE

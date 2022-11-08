@@ -100,8 +100,10 @@ def getArgs(performChecks=False):
 
 
 def resetPerms(dirs):
+    permUser = "thomas" if user == "public" else user
     for dir in dirs:
-        os.system("chown -R {user}:kanzlei {dir}".format(user=user, dir=dir))
+        os.system(
+            "chown -R {user}:kanzlei {dir}".format(user=permUser, dir=dir))
         os.system("chmod -R 777 {dir}".format(dir=dir))
     print('Ensured permissions for {user}'.format(user=user))
 
@@ -114,29 +116,29 @@ def checkForDisableFile(files):
 
 
 #####
-# CONFIG
+# MAIN
 #####
-IN_DIR = "/data/smb/{user}"
-OUT_DIR = "/backups/{user}"
-TMP_DIR = "{OUT_DIR}/.tmp"
-ORIGIN_MSSQL_DIR = "/data/mssql/{user}"
-TARGET_MSSQL_DIR = "{IN_DIR}/mssql"
-
 if __name__ == "__main__":
     args = getArgs()
     user = args.user[0]
 
     if not args.test:
-        IN_DIR = IN_DIR.format(user=user)
-        OUT_DIR = OUT_DIR.format(user=user)
+        IN_DIR = f"/data/smb/{user}"
+        OUT_DIR = f"/backups/{user}"
+        if user != "public":
+            IN_DIR += "-priv"
+
     else:
         IN_DIR = args.test[0]
         OUT_DIR = args.test[1]
         args.noMssql = True
 
-    TMP_DIR = TMP_DIR.format(OUT_DIR=OUT_DIR)
-    ORIGIN_MSSQL_DIR = ORIGIN_MSSQL_DIR.format(user=user)
-    TARGET_MSSQL_DIR = TARGET_MSSQL_DIR.format(IN_DIR=IN_DIR)
+    if user == "public":
+        args.noMssql = True
+
+    TMP_DIR = f"{OUT_DIR}/.tmp"
+    ORIGIN_MSSQL_DIR = f"/data/mssql/{user}"
+    TARGET_MSSQL_DIR = f"{IN_DIR}/mssql"
 
     main()
-    resetPerms([OUT_DIR, TARGET_MSSQL_DIR])
+    resetPerms([OUT_DIR] if user == "public" else [OUT_DIR, TARGET_MSSQL_DIR])
