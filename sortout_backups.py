@@ -79,6 +79,13 @@ def sortOut(fileNames):
     return toDelete
 
 
+# checks for disable file in user dir
+def checkForDisableFile(files):
+    if "DISABLE_SORTOUT" in files:
+        print("Found DISABLED file. Aborting.")
+        exit(0)
+
+
 parser = argparse.ArgumentParser(
     description='Sort out the backups of the user\'s data.\nBase Dir: {BASEDIR}'.format(BASEDIR=BASEDIR))
 parser.add_argument('user', help='The user\'s name')
@@ -114,6 +121,8 @@ else:
 
 if args.verbose:
     print("generated file list: {fileNames}".format(fileNames=fileNames))
+
+checkForDisableFile(fileNames)
 
 toDelete = sortOut(fileNames)
 print("still existing files: {existingFiles}".format(

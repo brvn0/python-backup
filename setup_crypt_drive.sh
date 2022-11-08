@@ -12,7 +12,7 @@ cryptsetup -c aes-cbc-essiv:sha256 -y -s 256 luksFormat $DRIVE --key-file $KEYFI
 cryptsetup luksOpen $DRIVE backup-drive --key-file $KEYFILE
 
 # add the alias to /etc/crypttab
-UUID = $(blkid -s UUID -o value $DRIVE)
+UUID=$(blkid -s UUID -o value $DRIVE)
 echo "$ALIAS $DRIVE $KEYFILE luks" >> /etc/crypttab
 
 # ext4 filesystem on the luks partition

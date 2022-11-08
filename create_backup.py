@@ -106,11 +106,18 @@ def resetPerms(dirs):
     print('Ensured permissions for {user}'.format(user=user))
 
 
+# checks for disable file in user dir
+def checkForDisableFile(files):
+    if "DISABLE_BACKUP" in files:
+        print("Found DISABLED file. Aborting.")
+        exit(0)
+
+
 #####
 # CONFIG
 #####
 IN_DIR = "/data/smb/{user}"
-OUT_DIR = "/backup-drive/{user}"
+OUT_DIR = "/backups/{user}"
 TMP_DIR = "{OUT_DIR}/.tmp"
 ORIGIN_MSSQL_DIR = "/data/mssql/{user}"
 TARGET_MSSQL_DIR = "{IN_DIR}/mssql"
