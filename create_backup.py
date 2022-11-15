@@ -10,6 +10,8 @@ import time
 import shutil
 import argparse
 import sys
+from upload import uploadBackup
+
 
 sys.setrecursionlimit(10000)
 
@@ -63,6 +65,12 @@ def main():
     backUpEnd = time.perf_counter()
     print("Backup for {user} created in: ".format(user=user) +
           str(round(backUpEnd - backUpStart, 0)) + " seconds (or ca. " + str(int(round((backUpEnd - backUpStart) / 60, 0))) + " Minutes)\nOutfile: {outfile}".format(outfile=outfile))
+    if user == "thomas":
+        uploadStart = time.perf_counter()
+        uploadBackup(outfile)
+        uploadEnd = time.perf_counter()
+        print("Backup for {user} uploaded in: ".format(user=user) + str(round(uploadEnd - uploadStart, 0)
+                                                                        ) + " seconds (or ca. " + str(int(round((uploadEnd - uploadStart) / 60, 0))) + " Minutes)")
 
 
 def getArgs(performChecks=False):
