@@ -75,7 +75,6 @@ def sortOut(fileNames):
         toDelete.remove(topPerMonths[top].strftime("%Y%m%d.tar.lz4"))
 
     toDelete = sorted(set(toDelete))
-    print(topPerMonths)
     return toDelete
 
 
