@@ -10,6 +10,7 @@ import time
 import shutil
 import argparse
 import sys
+import datetime
 from upload import uploadBackup
 
 
@@ -34,7 +35,7 @@ def backup(INPUT_DIR, OUTPUT_DIR, TMP, PGP_PATH=None, ALGORITHM="lz4"):
         '*.tar.lz4', '.tmp', 'backups'))
     # tar.lz4 compress the backup
     os.system(
-        "tar cf - {TMP} | {ALGORITHM} > {OUTPUT_FILE}".format(TMP=TMP, ALGORITHM=ALGORITHM, OUTPUT_FILE=OUTPUT_FILE))
+        "tar cf - {TMP} | {ALGORITHM} -9 > {OUTPUT_FILE}".format(TMP=TMP, ALGORITHM=ALGORITHM, OUTPUT_FILE=OUTPUT_FILE))
     # delete the temporary backup
     shutil.rmtree(TMP)
     return OUTPUT_FILE
@@ -65,7 +66,7 @@ def main():
     backUpEnd = time.perf_counter()
     print("Backup for {user} created in: ".format(user=user) +
           str(round(backUpEnd - backUpStart, 0)) + " seconds (or ca. " + str(int(round((backUpEnd - backUpStart) / 60, 0))) + " Minutes)\nOutfile: {outfile}".format(outfile=outfile))
-    if user == "thomas":
+    if user == "thomas" and datetime.today().weekday() == 5: # if user is thomas and today is saturday
         uploadStart = time.perf_counter()
         uploadBackup(outfile)
         uploadEnd = time.perf_counter()

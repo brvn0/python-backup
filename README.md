@@ -47,3 +47,9 @@ options:
   -d, --dry-run         Dry run; Does not delete anything
   -p PATH, --path PATH  Path to the backup directory
 ```
+
+
+Creation of backups:
+use tar to put every file in the backup dir into an archive
+then lz4 compress the whole thingy
+then split into chunks of 3gb each
