@@ -41,7 +41,7 @@ def sortOut(fileNames):
     toDelete = []
     topPerMonths = {}
     for file in fileNames:
-        name = re.split('([0-9]{8})', file)
+        name = re.split("([0-9]{8})", file)
         if args.verbose:
             print("name: " + name[1])
         try:
@@ -52,7 +52,9 @@ def sortOut(fileNames):
         # date object from string
         date = datetime.strptime(name, "%Y%m%d")
 
-        if (date < datetime.now() - timedelta(days=180)) or (date < datetime.now() - timedelta(days=14) and date.weekday() != 4):
+        if (date < datetime.now() - timedelta(days=180)) or (
+            date < datetime.now() - timedelta(days=14) and date.weekday() != 4
+        ):
             toDelete.append(file)
             if args.verbose:
                 print("toDelete: " + file)
@@ -60,8 +62,11 @@ def sortOut(fileNames):
         if date < datetime.now() - timedelta(days=90):
             if date.strftime("%Y%m") in topPerMonths:
                 if topPerMonths[str(date.strftime("%Y%m"))] < date:
-                    toDelete.append(topPerMonths[str(date.strftime(
-                        "%Y%m"))].strftime("%Y%m%d.tar.lz4"))
+                    toDelete.append(
+                        topPerMonths[str(date.strftime("%Y%m"))].strftime(
+                            "%Y%m%d.tar.lz4"
+                        )
+                    )
                     topPerMonths[str(date.strftime("%Y%m"))] = date
                 else:
                     toDelete.append(file)
@@ -86,18 +91,34 @@ def checkForDisableFile(files):
 
 
 parser = argparse.ArgumentParser(
-    description='Sort out the backups of the user\'s data.\nBase Dir: {BASEDIR}'.format(BASEDIR=BASEDIR))
-parser.add_argument('user', help='The user\'s name')
-parser.add_argument('-t', '--test', action='store_true',
-                    help='Test/Demo mode; Parses a pre-defined list of filenames and prints the result')
-parser.add_argument('-v', '--verbose', action='store_true',
-                    help='Verbose mode; Prints more information')
-parser.add_argument('-g', '--generate', nargs=1, metavar='PATH',
-                    help='Generates a couple of empty demo files', action='store')
-parser.add_argument('-d', '--dry-run', action='store_true',
-                    help='Dry run; Does not delete anything')
-parser.add_argument('-p', '--path', action='store', nargs=1,
-                    help='Path to the backup directory')
+    description="Sort out the backups of the user's data.\nBase Dir: {BASEDIR}".format(
+        BASEDIR=BASEDIR
+    )
+)
+parser.add_argument("user", help="The user's name")
+parser.add_argument(
+    "-t",
+    "--test",
+    action="store_true",
+    help="Test/Demo mode; Parses a pre-defined list of filenames and prints the result",
+)
+parser.add_argument(
+    "-v", "--verbose", action="store_true", help="Verbose mode; Prints more information"
+)
+parser.add_argument(
+    "-g",
+    "--generate",
+    nargs=1,
+    metavar="PATH",
+    help="Generates a couple of empty demo files",
+    action="store",
+)
+parser.add_argument(
+    "-d", "--dry-run", action="store_true", help="Dry run; Does not delete anything"
+)
+parser.add_argument(
+    "-p", "--path", action="store", nargs=1, help="Path to the backup directory"
+)
 args = parser.parse_args()
 
 if args.generate:
@@ -124,8 +145,11 @@ if args.verbose:
 checkForDisableFile(fileNames)
 
 toDelete = sortOut(fileNames)
-print("still existing files: {existingFiles}".format(
-    existingFiles=str(sorted(set(fileNames).difference(set(toDelete))))))
+print(
+    "still existing files: {existingFiles}".format(
+        existingFiles=str(sorted(set(fileNames).difference(set(toDelete))))
+    )
+)
 
 
 # delete files
@@ -138,8 +162,11 @@ else:
             print("deleting: {file}".format(file=file))
         os.remove(BASEDIR + "/" + file)
     endTime = time.time() - timeStart
-    print("deleted {count} files in {time} seconds".format(
-        count=len(toDelete), time=round(endTime, 2)))
+    print(
+        "deleted {count} files in {time} seconds".format(
+            count=len(toDelete), time=round(endTime, 2)
+        )
+    )
 
 
 exit(0)
