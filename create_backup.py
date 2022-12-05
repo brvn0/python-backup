@@ -10,7 +10,7 @@ import time
 import shutil
 import argparse
 import sys
-import datetime
+from datetime import datetime
 from upload import uploadBackup
 
 
