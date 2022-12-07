@@ -53,13 +53,13 @@ def sortOut(fileNames):
         date = datetime.strptime(name, "%Y%m%d")
 
         if (date < datetime.now() - timedelta(days=180)) or (
-            date < datetime.now() - timedelta(days=14) and date.weekday() != 4
+            date < datetime.now() - timedelta(days=7) and date.weekday() != 4
         ):
             toDelete.append(file)
             if args.verbose:
                 print("toDelete: " + file)
 
-        if date < datetime.now() - timedelta(days=90):
+        if date < datetime.now() - timedelta(days=60):
             if date.strftime("%Y%m") in topPerMonths:
                 if topPerMonths[str(date.strftime("%Y%m"))] < date:
                     toDelete.append(
