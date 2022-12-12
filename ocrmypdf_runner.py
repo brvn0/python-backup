@@ -10,8 +10,12 @@ def workFile(input, output):
 
 def getConfig(user):
     config = {
-        "in": "/data/smb/thomas-priv/ocrmypdf/in/" if user == "thomas" else "/data/smb/andi-priv/ocrmypdf/in/",
-        "out": "/data/smb/thomas-priv/ocrmypdf/out/" if user == "thomas" else "/data/smb/thomas-priv/ocrmypdf/out/",
+        "in": "/data/smb/thomas-priv/ocrmypdf/in/"
+        if user == "thomas"
+        else "/data/smb/andi-priv/ocrmypdf/in/",
+        "out": "/data/smb/thomas-priv/ocrmypdf/out/"
+        if user == "thomas"
+        else "/data/smb/thomas-priv/ocrmypdf/out/",
         "extensions": "pdf,jpg,jpeg,tif,tiff,png,gif",
         "binary": "ocrmypdf",  # needs ocrmypdf installed in path!
         "parameters": "-l deu --rotate-pages --output-type pdf --skip-text",
@@ -24,7 +28,7 @@ def touchFile(fileName, times=None):
     if os.path.exists(fileName):
         os.utime(fileName, None)
     else:
-       os.mknod(fileName)
+        os.mknod(fileName)
 
 
 def main(config):
@@ -34,7 +38,8 @@ def main(config):
     else:
         touchFile(config["in"] + ".~ocrLock")
     for file in os.listdir(config["in"]):
-        if file == ".~ocrLock": continue
+        if file == ".~ocrLock":
+            continue
         if file.split(".")[-1] in config["extensions"]:
             in_file = config["in"] + file
             out_file = config["out"] + file
