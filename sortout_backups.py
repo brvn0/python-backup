@@ -58,6 +58,7 @@ def sortOut(fileNames):
             toDelete.append(file)
             if args.verbose:
                 print("toDelete: " + file)
+            continue
 
         if date < datetime.now() - timedelta(days=60):
             if date.strftime("%Y%m") in topPerMonths:
@@ -77,7 +78,10 @@ def sortOut(fileNames):
 
     for top in topPerMonths:
         # remove month tops frn toDelete
-        toDelete.remove(topPerMonths[top].strftime("%Y%m%d.tar.lz4"))
+        try:
+            toDelete.remove(topPerMonths[top].strftime("%Y%m%d.tar.lz4"))
+        except ValueError:
+            pass
 
     toDelete = sorted(set(toDelete))
     return toDelete
