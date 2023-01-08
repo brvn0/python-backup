@@ -39,7 +39,7 @@ def generateDemoFiles():
 # HOURS USE D TO GET THIS SHIT TO WORK: 3
 def sortOut(fileNames):
     toDelete = []
-    topPerMonths = {}
+    # topPerMonths = {}
     for file in fileNames:
         name = re.split("([0-9]{8})", file)
         if args.verbose:
@@ -52,7 +52,7 @@ def sortOut(fileNames):
         # date object from string
         date = datetime.strptime(name, "%Y%m%d")
 
-        if (date < datetime.now() - timedelta(days=180)) or (
+        if (date < datetime.now() - timedelta(days=30)) or (
             date < datetime.now() - timedelta(days=7) and date.weekday() != 4
         ):
             toDelete.append(file)
@@ -60,28 +60,29 @@ def sortOut(fileNames):
                 print("toDelete: " + file)
             continue
 
-        if date < datetime.now() - timedelta(days=60):
-            if date.strftime("%Y%m") in topPerMonths:
-                if topPerMonths[str(date.strftime("%Y%m"))] < date:
-                    toDelete.append(
-                        topPerMonths[str(date.strftime("%Y%m"))].strftime(
-                            "%Y%m%d.tar.lz4"
-                        )
-                    )
-                    topPerMonths[str(date.strftime("%Y%m"))] = date
-                else:
-                    toDelete.append(file)
-                    if args.verbose:
-                        print("toDelete: " + file)
-            else:
-                topPerMonths[str(date.strftime("%Y%m"))] = date
+    #     if date < datetime.now() - timedelta(days=60):
+    #         if date.strftime("%Y%m") in topPerMonths:
+    #             if topPerMonths[str(date.strftime("%Y%m"))] < date:
+    #                 toDelete.append(
+    #                     topPerMonths[str(date.strftime("%Y%m"))].strftime(
+    #                         "%Y%m%d.tar.lz4"
+    #                     )
+    #                 )
+    #                 topPerMonths[str(date.strftime("%Y%m"))] = date
+    #             else:
+    #                 toDelete.append(file)
+    #                 if args.verbose:
+    #                     print("toDelete: " + file)
+    #         else:
+    #             topPerMonths[str(date.strftime("%Y%m"))] = date
 
-    for top in topPerMonths:
-        # remove month tops frn toDelete
-        try:
-            toDelete.remove(topPerMonths[top].strftime("%Y%m%d.tar.lz4"))
-        except ValueError:
-            pass
+    # for top in topPerMonths:
+    #     # remove month tops frn toDelete
+    #     try:
+    #         toDelete.remove(topPerMonths[top].strftime("%Y%m%d.tar.lz4"))
+    #     except ValueError:
+    #         # The top of a month isn't in the toDelete list so we don't have to worry about it
+    #         pass
 
     toDelete = sorted(set(toDelete))
     return toDelete
