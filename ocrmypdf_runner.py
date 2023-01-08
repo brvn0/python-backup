@@ -42,7 +42,7 @@ def main(config):
             continue
         if file.split(".")[-1] in config["extensions"]:
             in_file = config["in"] + file
-            out_file = config["out"] + '_tmp' + file
+            out_file = config["out"] + "_tmp" + file
             try:
                 filePerms = os.stat(in_file)
             except:
@@ -63,7 +63,9 @@ def main(config):
                 try:
                     shutil.move(in_file, out_file)
                 except:
-                    print(f"Error: In consequence of a previous error, moving {file} failed!\nSkipping to the next file!!!")
+                    print(
+                        f"Error: In consequence of a previous error, moving {file} failed!\nSkipping to the next file!!!"
+                    )
                     continue
             else:
                 try:
