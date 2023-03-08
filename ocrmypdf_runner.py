@@ -12,12 +12,12 @@ def getConfig(user):
     config = {
         "in": "/data/smb/public/ocrmypdf/in/",
         "out": "/data/smb/public/ocrmypdf/out/",
-        #"in": "/data/smb/thomas-priv/ocrmypdf/in/"
-        #if user == "thomas"
-        #else "/data/smb/andi-priv/ocrmypdf/in/",
-        #"out": "/data/smb/thomas-priv/ocrmypdf/out/"
-        #if user == "thomas"
-        #else "/data/smb/thomas-priv/ocrmypdf/out/",
+        # "in": "/data/smb/thomas-priv/ocrmypdf/in/"
+        # if user == "thomas"
+        # else "/data/smb/andi-priv/ocrmypdf/in/",
+        # "out": "/data/smb/thomas-priv/ocrmypdf/out/"
+        # if user == "thomas"
+        # else "/data/smb/thomas-priv/ocrmypdf/out/",
         "extensions": "pdf,jpg,jpeg,tif,tiff,png,gif",
         "binary": "ocrmypdf",  # needs ocrmypdf installed in path!
         "parameters": "-l deu --rotate-pages --output-type pdf --skip-text",
