@@ -25,6 +25,21 @@ def ignorePath(path):
 
     return ignoref
 
+def wipe(path, retries = 5):
+    retries = 5
+    if not os.path.exists(path):
+        print("wipe: path doesn't exist")
+        return
+    if not os.path.isdir(path):
+        print("wipe: path != dir")
+        return
+    if retries:
+        try:
+            if os.path.isdir(path):
+                shutil.rmtree(path)
+        except:
+            wipe(path)
+
 
 def backup(INPUT_DIR, OUTPUT_DIR, TMP, PGP_PATH=None, ALGORITHM="lz4"):
     # TODO implement pgp encrypting
@@ -36,7 +51,7 @@ def backup(INPUT_DIR, OUTPUT_DIR, TMP, PGP_PATH=None, ALGORITHM="lz4"):
     )
     # Create a backup of INPUT directory
     if os.path.exists(TMP):
-        shutil.rmtree(TMP)
+        wipe(TMP)
     shutil.copytree(
         INPUT_DIR, TMP, ignore=shutil.ignore_patterns("*.tar.lz4", ".tmp", "backups")
     )
@@ -47,14 +62,14 @@ def backup(INPUT_DIR, OUTPUT_DIR, TMP, PGP_PATH=None, ALGORITHM="lz4"):
         )
     )
     # delete the temporary backup
-    shutil.rmtree(TMP)
+    wipe(TMP)
     return OUTPUT_FILE
 
 
 def copyMssqlDb(INPUT, OUTPUT):
     # delete old copy if exists
     if os.path.exists(OUTPUT):
-        shutil.rmtree(OUTPUT)
+        wipe(OUTPUT)
     # Copy the database
     shutil.copytree(INPUT, OUTPUT)
 
