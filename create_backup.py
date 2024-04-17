@@ -38,6 +38,7 @@ def wipe(path, retries = 5):
             if os.path.isdir(path):
                 shutil.rmtree(path)
         except:
+            os.chmod(path, 777)
             wipe(path)
 
 
