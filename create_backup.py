@@ -52,8 +52,15 @@ def backup(INPUT_DIR, OUTPUT_DIR, TMP, PGP_PATH=None, ALGORITHM="lz4"):
     # Create a backup of INPUT directory
     if os.path.exists(TMP):
         wipe(TMP)
+    copyStart = time.perf_counter()
     shutil.copytree(
         INPUT_DIR, TMP, ignore=shutil.ignore_patterns("*.tar.lz4", ".tmp", "backups")
+    )
+    copyEnd = time.perf_counter()
+    print(
+            "TMP folder set up for {user} in: ".format(user=user)
+            + str(int(round(copyEnd - copyStart, 0)))
+            + " seconds"
     )
     # tar.lz4 compress the backup
     os.system(
@@ -221,7 +228,7 @@ if __name__ == "__main__":
     if user == "public":
         args.noMssql = True
 
-    TMP_DIR = f"{OUT_DIR}/.tmp"
+    TMP_DIR = f"d/data/tmp/{user}"
     ORIGIN_MSSQL_DIR = f"/data/mssql/{user}"
     TARGET_MSSQL_DIR = f"{IN_DIR}/mssql"
 
